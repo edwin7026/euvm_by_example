@@ -1,0 +1,6 @@
+= EUVM by Example
+:subtitle: A practical guide to learning EUVM
+:author: Edwin Joy
+:email: edwin.joy@incoresemi.com
+:doctype: book
+:pdf-theme: title_theme.yml
