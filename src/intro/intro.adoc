@@ -1,1 +1,6 @@
-= Introduction
+== Introduction
+:doctype: book
+:pdf-theme: ../src/resources/themes/theme.yml
+:lang: en
+
+This book is a practical guide to learning the EUVM (European Universal Verification Methodology) through examples. It is designed to help readers understand the concepts and applications of EUVM in a hands-on manner.

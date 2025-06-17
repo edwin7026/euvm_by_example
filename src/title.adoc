@@ -1,6 +1,11 @@
-= EUVM by Example
-:subtitle: A practical guide to learning EUVM
-:author: Edwin Joy
-:email: edwin.joy@incoresemi.com
+= EUVM by Example: A practical guide to learning EUVM
+:orgname: InCore Semiconductors Pvt. Ltd.
+:author_1: Edwin Joy
+:author_2: Santhosh Kola
+:email_1: edwin.joy@incoresemi.com
+:email_2: santhosh.kola@incoresemi.com
 :doctype: book
-:pdf-theme: title_theme.yml
+:pdf-theme: ../src/resources/themes/theme.yml
+:lang: en
+
+include::index.adoc[]

@@ -1,0 +1,15 @@
+extends: default
+title-page:
+  align: right
+  title:
+    font_size: 48
+    font_style: normal
+    font_color: 5e82da
+    margin_top: 30
+  subtitle:
+    font_size: 24
+    font_color: 767c8e
+    font_style: normal
+    margin_top: 10  # add a margin top to make the subtitle appear below the title
+  authors:
+    font_size: 14
