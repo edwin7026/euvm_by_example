@@ -1,2 +1,5 @@
 # built book path
 build/book
+
+# editor specific
+.vscode
