@@ -1,8 +1,32 @@
-= Index
+= EUVM by Example: A practical guide to learning EUVM
+:orgname: InCore Semiconductors Pvt. Ltd.
+:author_1: Edwin Joy
+:author_2: Santhosh Kola
+:email_1: edwin.joy@incoresemi.com
+:email_2: santhosh.kola@incoresemi.com
+:doctype: book
+:pdf-theme: ../src/resources/themes/theme.yml
 :lang: en
+:toc-class: toc2
+:chapter-refsig: Chapter
+:section-refsig: Section
+:appendix-refsig: Appendix
+:toc: left
+:toclevels: 3
+:source-highlighter: pygments
+:pygments-style: github
+
+[glossary]
+== Terminology
+UVM:: Universal Verification Methodology
+EUVM:: Embedded UVM
+ESDL::
+DUT:: Design Under Test
+TB:: Testbench
 
 include::intro/intro.adoc[]
-
-include::example1/example_1.adoc[]
-
+include::hello/hello.adoc[]
 include::references.adoc[]
+
+[index]
+= Index
