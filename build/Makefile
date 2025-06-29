@@ -12,12 +12,14 @@ BOOK_NAME=euvm_by_example
 
 SRC_FILES:=$(shell find $(SRC_DIR) -name *.*)
 
+ASCII_FLAGS:=-v -v
+
 all: $(BOOK_PATH)/$(BOOK_NAME).pdf
 
 rebuild: clean all
 
 $(BOOK_PATH)/$(BOOK_NAME).pdf: $(SRC_FILES)
-	asciidoctor-pdf $(SRC_DIR)/title.adoc -o $@
+	asciidoctor-pdf -a source-highlighter=pygments $(ASCII_FLAGS) $(SRC_DIR)/index.adoc -o $@
 
 clean:
 	rm -rf $(BOOK_PATH)
