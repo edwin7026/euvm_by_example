@@ -66,3 +66,9 @@ include::../euvm_examples/hello/hello_tb.d[tag=testbench]
 ----
 include::../euvm_examples/hello/hello_tb.d[tag=test]
 ----
+
+==== main
+[source,d]
+----
+include::../euvm_examples/hello/hello_tb.d[tag=main]
+----
