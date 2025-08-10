@@ -44,7 +44,6 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    needs: tag-release
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -57,12 +56,10 @@ jobs:
 
       - name: Build PDF (if not present)
         run: |
-          if [ ! -f book.pdf ]; then
-            sudo apt-get update
-            sudo gem install pygments.rb
-            sudo gem install asciidoctor-pdf
-            make -f build/Makefile all
-          fi
+          sudo apt-get update
+          sudo gem install asciidoctor-pdf
+          sudo gem install pygments.rb
+          cd build && make all
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
@@ -80,6 +77,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ./book.pdf
-          asset_name: book.pdf
+          asset_path: ./build/book/euvm_by_example.pdf
+          asset_name: euvm_by_example.pdf
           asset_content_type: application/pdf
