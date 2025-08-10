@@ -8,8 +8,8 @@ to be followed while making contributitions here.
 Following steps should be taken to make a new chapter entry to the book:
 - All source code is to be added to `src` directory.
 - A new chapter should be added with this scheme `src/<new_chapter>/new_chapter.adoc`.
-- All code related to the new chapter should be checked in `src/eucm_examples/<new_chapter>/`.
-- Commond artefacts like fonts, images and themes should be checked into their
+- All code related to the new chapter should be checked in `src/euvm_examples/<new_chapter>/`.
+- Common artefacts like fonts, images and themes should be checked into their
 corresponding directories in `src/resources/` respectively.
 
 ## After making the requisite changes
