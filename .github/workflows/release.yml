@@ -1,0 +1,85 @@
+name: Post-Merge CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get latest version from CHANGELOG.md
+        id: get_version
+        run: |
+          VERSION=$(grep -m1 -oP '\[\K[0-9]+\.[0-9]+\.[0-9]+' CHANGELOG.md)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create tag
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const version = '${{ steps.get_version.outputs.version }}';
+            const tag = `v${version}`;
+            const { owner, repo } = context.repo;
+            try {
+              await github.rest.git.createRef({
+                owner,
+                repo,
+                ref: `refs/tags/${tag}`,
+                sha: context.sha
+              });
+              console.log(`Tag ${tag} created.`);
+            } catch (error) {
+              if (error.message.includes('Reference already exists')) {
+                console.log(`Tag ${tag} already exists.`);
+              } else {
+                throw error;
+              }
+            }
+
+  release:
+    runs-on: ubuntu-latest
+    needs: tag-release
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get latest version from CHANGELOG.md
+        id: get_version
+        run: |
+          VERSION=$(grep -m1 -oP '\[\K[0-9]+\.[0-9]+\.[0-9]+' CHANGELOG.md)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Build PDF (if not present)
+        run: |
+          if [ ! -f book.pdf ]; then
+            sudo apt-get update
+            sudo gem install pygments.rb
+            sudo gem install asciidoctor-pdf
+            make -f build/Makefile all
+          fi
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.get_version.outputs.version }}
+          release_name: "Release v${{ steps.get_version.outputs.version }}"
+          draft: false
+          prerelease: false
+
+      - name: Upload PDF to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./book.pdf
+          asset_name: book.pdf
+          asset_content_type: application/pdf

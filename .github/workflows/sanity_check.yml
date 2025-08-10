@@ -1,0 +1,67 @@
+name: Pre-Merge CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  version-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get latest version from CHANGELOG.md
+        id: get_version
+        run: |
+          VERSION=$(grep -m1 -oP '\[\K[0-9]+\.[0-9]+\.[0-9]+' CHANGELOG.md)
+          echo "latest_version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Get previous version from remote
+        id: get_prev_version
+        run: |
+          git fetch --tags origin
+          PREV_VERSION=$(git show origin/main:CHANGELOG.md | grep -m1 -oP '\[\K[0-9]+\.[0-9]+\.[0-9]+')
+          echo "prev_version=$PREV_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Compare versions
+        run: |
+          latest="${{ steps.get_version.outputs.latest_version }}"
+          prev="${{ steps.get_prev_version.outputs.prev_version }}"
+          echo "Latest version: $latest"
+          echo "Previous version: $prev"
+          if [ "$latest" = "$prev" ]; then
+            echo "Version in CHANGELOG.md has not been updated."
+            exit 1
+          fi
+          latest_major=$(echo $latest | cut -d. -f1)
+          latest_minor=$(echo $latest | cut -d. -f2)
+          latest_patch=$(echo $latest | cut -d. -f3)
+          prev_major=$(echo $prev | cut -d. -f1)
+          prev_minor=$(echo $prev | cut -d. -f2)
+          prev_patch=$(echo $prev | cut -d. -f3)
+          if [ "$latest_major" -lt "$prev_major" ] || \
+             { [ "$latest_major" -eq "$prev_major" ] && [ "$latest_minor" -lt "$prev_minor" ]; } || \
+             { [ "$latest_major" -eq "$prev_major" ] && [ "$latest_minor" -eq "$prev_minor" ] && [ "$latest_patch" -le "$prev_patch" ]; }
+          then
+            echo "Version in CHANGELOG.md must be greater than previous version."
+            exit 1
+          fi
+
+  build-pdf:
+    runs-on: ubuntu-latest
+    needs: version-check
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up environment
+        run: |
+          sudo apt-get update
+          sudo gem install pygments.rb
+          sudo gem install asciidoctor-pdf
+
+      - name: Build PDF
+        run: |
+          make -f build/Makefile all
