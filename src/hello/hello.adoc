@@ -62,12 +62,31 @@ include::../euvm_examples/hello/hello_tb.d[tag=testbench]
 ----
 
 ==== uvm_test Instance
+`uvm_test` instance specifies a top level entry point for the simulation. The name of this class is specified in the run command (`+UVM_TESTNAME=hello_tb.HelloTest`) we used earlier to run the simulation. It instantiates and configures the environment and other components of the testbench. `HelloTest` is inherited from this class. It is here that we define and attach test sequences to the testbench.
+
 [source,d]
 ----
 include::../euvm_examples/hello/hello_tb.d[tag=test]
 ----
 
+===== Factory Registration
+In UVM, we use a factory to dynamically create and manage the lifecycle of various components in the testbench. The `uvm_component_utils` mixin macro helps us register the component with the factory. The test factory then goes ahead and creates an instance of the component when needed. This is a powerful feature of UVM that allows for dynamic configuration and instantiation of components at runtime.
+[source,d]
+----
+include::../euvm_examples/hello/hello_tb.d[tag=factory_reg]
+----
+
+===== UVM Phases
+UVM testbenches are structured around a series of phases that control the execution of the simulation. Each phase has a specific purpose and is executed in a defined order. In this example we will look at the `build_phase` and `run_phase`. We will look at other phases in the subsequent examples.
+
+====== build_phase
+The `build_phase` is where we can create and configure the components of our testbench. In this case, we do not have any specific components to create, so we simply call the parent class's `build_phase` method.
+
+====== run_phase
+The `run_phase` is a special phase in UVM that is executed during the simulation. It is where we can define the main logic of our testbench. In this case, we simply print "Hello World!" to the console.
+
 ==== main
+The `main` function is the entry point of the executable. We create an instance of the `uvm_tb` class and start the simulation by calling the `run` method.
 [source,d]
 ----
 include::../euvm_examples/hello/hello_tb.d[tag=main]

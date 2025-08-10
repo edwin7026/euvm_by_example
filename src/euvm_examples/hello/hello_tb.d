@@ -19,10 +19,17 @@ class HelloTestbench: uvm_tb {
 
 // tag::test[]
 class HelloTest : uvm_test {
-    mixin uvm_component_utils;
 
+//tag::factory_reg[]
+    mixin uvm_component_utils;
+// end::factory_reg[]
+    
     this(string name, uvm_component parent) {
-        super(name, parent);    
+        super(name, parent);
+    }
+
+    override void buld_phase(uvm_phase phase) {
+        super.build_phase(phase);
     }
 
     override void run_phase(uvm_phase phase) {
