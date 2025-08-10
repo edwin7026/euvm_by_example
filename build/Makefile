@@ -19,7 +19,7 @@ all: $(BOOK_PATH)/$(BOOK_NAME).pdf
 rebuild: clean all
 
 $(BOOK_PATH)/$(BOOK_NAME).pdf: $(SRC_FILES)
-	asciidoctor-pdf -a source-highlighter=pygments $(ASCII_FLAGS) $(SRC_DIR)/index.adoc -o $@
+	asciidoctor-pdf -a source-highlighter=pygments $(ASCII_FLAGS) $(SRC_DIR)/index.adoc -o $@ sdfdf
 
 clean:
 	rm -rf $(BOOK_PATH)
