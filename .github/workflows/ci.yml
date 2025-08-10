@@ -63,7 +63,6 @@ jobs:
       - name: Set up environment
         run: |
           sudo apt-get update
-          sudo apt-get install -y asciidoctor
           sudo gem install asciidoctor-pdf
           sudo gem install pygments.rb
       - name: Build PDF
@@ -126,7 +125,6 @@ jobs:
         run: |
           if [ ! -f book/euvm_by_example.pdf ]; then
             sudo apt-get update
-            sudo apt-get install -y asciidoctor
             sudo gem install asciidoctor-pdf
             sudo gem install pygments.rb
             make -f build/Makefile all
