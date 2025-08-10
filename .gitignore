@@ -1,5 +1,9 @@
 # built book path
 build/book
 
+# d stuff
+*.o
+bin/
+
 # editor specific
 .vscode

@@ -1,0 +1,96 @@
+== Chapter 1: Hello World!
+:chapter-number: 1
+
+[.chapter-opener]
+Let us get started with the simplest EUVM testbench there could ever be! We abstract away any Device Under Test (DUT) for this example.
+
+.hello_tb.d
+[%linenums,d]
+----
+include::../euvm_examples/hello/hello_tb.d[tags=**]
+----
+
+There is a lot to unpack for a "Hello World!" here. Let us learn to compile and run the testbench before we dissect the code.
+
+=== Compiling and running the testbench
+
+We will be using the `ldc2` D compiler that is shipped along with the EUVM package for compiling the above testbench. Let us compile the testbench using the following command.
+
+[source,shell]
+----
+ldc2 -L-luvm-ldc-shared -L-lesdl-ldc-shared -link-defaultlib-shared hello_tb.d -of hello
+----
+
+Here, we link the two important libraries that constitute EUVM - ESDL and UVM. With no errors in the compilation and linking process, we should be able to see a `hello` executable created. Now, we can go ahead and run the testbench:
+
+[source,shell]
+----
+./hello +UVM_TESTNAME=hello_tb.HelloTest
+----
+
+This should print out a whole host of things but somewhere in the log you should be able to see our dear "Hello World!".
+
+=== What just happened?
+
+==== Setting the stage
+Let's look at the module needed to make the testbench.
+[source,d]
+----
+include::../euvm_examples/hello/hello_tb.d[tag=includes]
+----
+`module` keyword exports the file as a module. The name of the module is typically same as that of the file.
+
+We also import `writeln` function from `std.stdio` to help us with printing stuffs on the screen.
+
+`esdl` module facilitates core EUVM constructs like defining simulation entities, interfaces with DUT, synchronization of testbench agents etc.
+`uvm` module is the implementation of IEE-1800.2 (UVM) specificaiton in D.
+
+==== Simulation Entity
+Here we create a simulation entity called `DutEntity`, derived from the class `Entity`. `Entity` class helps us instantiate a DUT and connect the testbench interface with that of the DUT's.
+[source,d]
+----
+include::../euvm_examples/hello/hello_tb.d[tag=entity]
+----
+As you can see, this is an empty class here as we do not have any DUT for this example. Therefore, removing this definition and its subsequent instantiation in `HelloTestbench` would still make the testbench compiile-able and running. You can try! We will study this class in greater detail in the next few examples.
+
+==== Simulation Testbench Top
+`uvm_tb` help us define a top level testbench class. `HelloTestbench` is inherited from this class. A `uvm_tb` class helps us tweak various simulation parameters and hooks with a particular instance of `uvm_test`. We will talk about how this happens when we instantiate this in the `main` function. Additionally, `uvm_tb` also helps us share objects within various components of the testbench.  
+
+[source,d]
+----
+include::../euvm_examples/hello/hello_tb.d[tag=testbench]
+----
+
+==== uvm_test Instance
+`uvm_test` instance specifies a top level entry point for the simulation. The name of this class is specified in the run command (`+UVM_TESTNAME=hello_tb.HelloTest`) we used earlier to run the simulation. It instantiates and configures the environment and other components of the testbench. `HelloTest` is inherited from this class. It is here that we define and attach test sequences to the testbench.
+
+[source,d]
+----
+include::../euvm_examples/hello/hello_tb.d[tag=test]
+----
+
+===== Factory Registration
+In UVM, we use a factory to dynamically create and manage the lifecycle of various components in the testbench. The `uvm_component_utils` mixin macro helps us register the component with the factory. The test factory then goes ahead and creates an instance of the component when needed. This is a powerful feature of UVM that allows for dynamic configuration and instantiation of components at runtime.
+[source,d]
+----
+include::../euvm_examples/hello/hello_tb.d[tag=factory_reg]
+----
+
+===== UVM Phases
+UVM testbenches are structured around a series of phases that control the execution of the simulation. Each phase has a specific purpose and is executed in a defined order. In this example we will look at the `build_phase` and `run_phase`. We will look at other phases in the subsequent examples.
+
+====== build_phase
+The `build_phase` is where we can create and configure the components of our testbench. In this case, we do not have any specific components to create, so we simply call the parent class's `build_phase` method.
+
+====== run_phase
+The `run_phase` is a special phase in UVM that is executed during the simulation. It is where we can define the main logic of our testbench. In this case, we simply print "Hello World!" to the console.
+
+==== main
+The `main` function is the entry point of the executable. We create an instance of the `uvm_tb` class and start the simulation by calling the `run` method.
+[source,d]
+----
+include::../euvm_examples/hello/hello_tb.d[tag=main]
+----
+
+=== Summary
+In this chapter, we have created a simple "Hello World!" testbench using EUVM. We have learned how to compile and run the testbench, and we have explored the basic structure of a UVM testbench. We have also seen how to use the factory to register components and how to define the `build_phase` and `run_phase`. In the next chapter, we will explore how to create a more complex testbench with a Device Under Test (DUT) and how to interact with it using UVM sequences and drivers.

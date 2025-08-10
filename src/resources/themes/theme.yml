@@ -1,6 +1,7 @@
 extends: default
 title-page:
   align: right
+  size: Letter
   title:
     font_size: 48
     font_style: normal
@@ -13,3 +14,37 @@ title-page:
     margin_top: 10  # add a margin top to make the subtitle appear below the title
   authors:
     font_size: 14
+
+page:
+  background_color: ffffff
+  layout: portrait
+  margin: [0.75in, 1in, 0.75in, 1in]
+  size: Letter
+
+# Base heading configuration
+heading:
+  font_family: Helvetica
+  font_style: bold
+  # Chapter titles (level 0 - document title and chapters with = )
+  h1_font_color: 2c3e50      # Dark blue-gray
+  h1_font_size: 32
+  h1_margin_top: 0
+  h1_margin_bottom: 20
+  h1_align: center
+  # Section headings (level 1 - sections with == )
+  h2_font_color: 34495e      # Medium blue-gray  
+  h2_font_size: 24
+  h2_margin_top: 24
+  h2_margin_bottom: 12
+  # Subsection headings (level 2 - subsections with === )
+  h3_font_color: 7f8c8d      # Light gray
+  h3_font_size: 18
+  h3_margin_top: 18
+  h3_margin_bottom: 8
+  # Lower level headings
+  h4_font_color: 95a5a6      # Lighter gray
+  h4_font_size: 14
+  h5_font_color: 95a5a6
+  h5_font_size: 11  
+  h6_font_color: 95a5a6
+  h6_font_size: 10
