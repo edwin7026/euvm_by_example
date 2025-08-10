@@ -25,7 +25,9 @@ DUT:: Design Under Test
 TB:: Testbench
 
 include::intro/intro.adoc[]
+
 include::hello/hello.adoc[]
+
 include::references.adoc[]
 
 [index]
