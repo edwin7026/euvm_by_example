@@ -86,7 +86,7 @@ The `build_phase` is where we can create and configure the components of our tes
 The `run_phase` is a special phase in UVM that is executed during the simulation. It is where we can define the main logic of our testbench. In this case, we simply print "Hello World!" to the console.
 
 ==== main
-The `main` function is the entry point of the executable. We create an instance of the `uvm_tb` class and start the simulation by calling the `run` method.
+The `main` function is the entry point of the executable. We create an instance of the `uvm_tb` class and start the simulation by calling the `start` method.
 [source,d]
 ----
 include::../euvm_examples/hello/hello_tb.d[tag=main]
