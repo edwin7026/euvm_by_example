@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [0.1.4] - 2025-10-18
+- Reference url produced by create-release action
+
 ## [0.1.3] - 2025-10-18
 - Fixing CI for release mechanism try 3
 - Added secret keys
